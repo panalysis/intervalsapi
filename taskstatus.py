@@ -1,4 +1,5 @@
-__author__ = 'rodj'
+__author__ = 'Rod Jacka'
+__copyright__ = 'Copyright 2017, Panalysis PTY LTD'
 
 class TaskStatus(object):
 
@@ -13,7 +14,6 @@ class TaskStatus(object):
             self.id = data['id']
         if 'name' in data:
             self.name = data['name']
-
 
     @property
     def active(self):

@@ -1,5 +1,8 @@
-__author__ = 'rodj'
+__author__ = 'Rod Jacka, Leo Dunn'
+__copyright__ = 'Copyright 2017, Panalysis PTY LTD'
+
 import datetime
+import HTMLParser
 
 class Task(object):
 
@@ -77,7 +80,7 @@ class Task(object):
             self.severity = data['severity']
 
         if  'title' in data:
-            self.title = data['title']
+            self.title = HTMLParser.HTMLParser().unescape(data['title'])
 
         if  'priority' in data and data['priority'] is not None:
             self.priority = int(data['priority'])
@@ -86,7 +89,7 @@ class Task(object):
             self.followers = data['followers'].split(',')
 
         if  'status' in data:
-            self.status = data['status']
+            self.status = HTMLParser.HTMLParser().unescape(data['status'])
 
         if  'assigneeid' in data and data['assigneeid'] is not None:
             self.assigneeid = data['assigneeid'].split(',')
@@ -137,7 +140,7 @@ class Task(object):
             self.summary = data['summary']
 
         if  'project' in data:
-            self.project = data['project']
+            self.project = HTMLParser.HTMLParser().unescape(data['project'])
 
         if  'client' in data:
             self.client = data['client']
@@ -258,7 +261,6 @@ class Task(object):
             return True
         else:
             return False
-
 
     def __get_date__(self,dateStr):
         my_dt = datetime.datetime.strptime(dateStr,"%Y-%m-%d")

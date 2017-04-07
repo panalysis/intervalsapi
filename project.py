@@ -1,4 +1,6 @@
-__author__ = 'rodj'
+__author__ = 'Rod Jacka'
+__copyright__ = 'Copyright 2017, Panalysis PTY LTD'
+
 import datetime
 from distutils.util import strtobool
 from performance_report import ProjectTypes, BillingTypes

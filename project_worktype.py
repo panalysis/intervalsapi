@@ -1,3 +1,5 @@
+__author__ = 'Rod Jacka'
+__copyright__ = 'Copyright 2017, Panalysis PTY LTD'
 
 from distutils.util import strtobool
 

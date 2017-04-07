@@ -1,9 +1,11 @@
-__author__ = 'rodj'
+__author__ = 'Rod Jacka, Leo Dunn'
+__copyright__ = 'Copyright 2017, Panalysis PTY LTD'
+
 import datetime
+import HTMLParser
 from distutils.util import strtobool
 
-
-class Time(object):
+class TaskTime(object):
 
     times = {}
     transaction_register = None
@@ -69,12 +71,12 @@ class Time(object):
             self.billable = strtobool( data['billable'])
 
         if 'description' in data and data['description'] is not None:
-            self.description = data['description']
+            self.description = HTMLParser.HTMLParser().unescape(data['description'])
 
         if 'worktypeid' in data and data['worktypeid'] is not None:
             self.work_type_id = int(data['worktypeid'])
 
-        Time.times[self.id] = self
+        TaskTime.times[self.id] = self
 
 
     def __get_date__(self,dateStr):
@@ -88,28 +90,28 @@ class Time(object):
         time_by_date = []
         set_s = []
         if date_from is not None and date_to is not None:
-            for i,t in Time.times.items():
+            for i,t in TaskTime.times.items():
                 if t.date >= date_from and t.date <= date_to:
                     time_by_date.append(t.id)
             set_s.append(set(time_by_date))
 
         time_by_consultant = []
         if consultant != "":
-            for i,t in Time.times.items():
+            for i,t in TaskTime.times.items():
                 if t.full_name.lower() == consultant.lower():
                     time_by_consultant.append(t.id)
             set_s.append(set(time_by_consultant))
 
         time_by_project = []
         if project_id != 0:
-            for i,t in Time.times.items():
+            for i,t in TaskTime.times.items():
                 if t.project_id == project_id:
                     time_by_project.append(t.id)
             set_s.append(set(time_by_project))
 
         time_by_task = []
         if task_id != 0:
-            for i,t in Time.times.items():
+            for i,t in TaskTime.times.items():
                 if t.task_id == task_id:
                     time_by_task.append(t.id)
             set_s.append(set(time_by_task))
@@ -126,12 +128,12 @@ class Time(object):
         result = []
         if res is not None and len(res)>0:
             for i in list(res):
-                result.append(Time.times[i])
+                result.append(TaskTime.times[i])
 
         return result
 
     def get_time_summary(consultant="",date_from=None, date_to=None, project_id=0, task_id=0):
-        times = Time.get_times(consultant=consultant,date_from=date_from, date_to=date_to, project_id=project_id, task_id=task_id)
+        times = TaskTime.get_times(consultant=consultant,date_from=date_from, date_to=date_to, project_id=project_id, task_id=task_id)
         result = {}
 
         for t in times:
@@ -177,7 +179,7 @@ class Time(object):
 
     def get_unallocated_time(date_from=None, date_to=None, project_id=0):
 
-        times = Time.get_times(date_from=date_from, date_to=date_to, project_id=project_id)
+        times = TaskTime.get_times(date_from=date_from, date_to=date_to, project_id=project_id)
 
         res = []
         for t in times:
